@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
+            $table->string('district');
+            $table->string('electorate');
+            $table->string('candidate');
+            $table->text('description');
+            $table->string('report_category');
+            $table->string('type');
+            // Add other fields as needed
             $table->timestamps();
         });
     }
