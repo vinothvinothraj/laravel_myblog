@@ -34,6 +34,8 @@ class Reports extends Page
 
     public $stepName = '';
 
+    public $table;
+
     // Form state properties
     public $form_state = [
 
