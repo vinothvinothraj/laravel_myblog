@@ -60,7 +60,7 @@ class CreateNewReport extends Page
 
     ];
 
-
+    
     protected function getFormSchema(): array
     {
         return [
