@@ -9,4 +9,12 @@ class ReportsDashboard extends Page
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.reports-dashboard';
+
+    public function getWidgets(): array
+    {
+        return [
+            \App\Livewire\NewReportsStatsOverview::class,
+        ];
+    }
+
 }
