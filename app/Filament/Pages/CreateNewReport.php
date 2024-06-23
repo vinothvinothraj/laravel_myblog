@@ -2,10 +2,10 @@
 
 namespace App\Filament\Pages;
 
+use Filament\Pages\Page;
 use App\Models\RadioAdverts;
 use App\Models\TvAdverts;
 use App\Models\MainStream;
-use Filament\Pages\Page;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
@@ -24,13 +24,11 @@ use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
-
-
-class Reports extends Page
+class CreateNewReport extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static string $view = 'filament.pages.reports';
+    protected static string $view = 'filament.pages.create-new-report';
 
     protected static bool $shouldRegisterNavigation = false;
 
@@ -362,5 +360,4 @@ class Reports extends Page
             session()->flash('error', 'Invalid submission type or missing data.');
         }
     }
-
 }
