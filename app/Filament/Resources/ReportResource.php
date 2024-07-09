@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\ReportResource\RelationManagers\MainStreamRelationManager;
 
 class ReportResource extends Resource
 {
@@ -24,56 +25,60 @@ class ReportResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('district')
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
                 Forms\Components\TextInput::make('electorate')
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
                 Forms\Components\TextInput::make('candidate')
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
                 Forms\Components\Textarea::make('description')
+                    ->required(),
+                Forms\Components\Select::make('report_category')
+                    ->options([
+                        'mainstream' => 'Mainstream',
+                        'social_media' => 'Social Media',
+                    ])
                     ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('report_category')
+                    ->reactive()
+                    ->afterStateUpdated(fn ($state, callable $set) => $set('type', null)),
+                Forms\Components\Select::make('type')
+                    ->options(fn (callable $get) => $get('report_category') === 'mainstream' ? [
+                        'tv' => 'TV',
+                        'radio' => 'Radio',
+                        'print' => 'Print',
+                    ] : [
+                        'facebook' => 'Facebook',
+                        'twitter' => 'Twitter',
+                        'instagram' => 'Instagram',
+                    ])
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('type')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+                    ->reactive()
+                    ->afterStateUpdated(fn ($state, callable $set) => $set('showTvFields', $state === 'tv')),
+                Forms\Components\Hidden::make('showTvFields')
+                    ->default(false)
+                    ->reactive(),
+                Forms\Components\Placeholder::make('TvFieldsPlaceholder')
+                    ->content('TV Fields will be shown here')
+                    ->visible(fn (callable $get) => $get('showTvFields'))
+            ])
+            ->columns(2);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('district')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('electorate')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('candidate')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('report_category')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('type')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('district'),
+                Tables\Columns\TextColumn::make('electorate'),
+                Tables\Columns\TextColumn::make('candidate'),
+                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\TextColumn::make('report_category'),
+                Tables\Columns\TextColumn::make('type'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -83,9 +88,10 @@ class ReportResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            MainStreamRelationManager::class,
         ];
     }
+
 
     public static function getPages(): array
     {
