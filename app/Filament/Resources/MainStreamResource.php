@@ -23,18 +23,7 @@ class MainStreamResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('report_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('type')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('cost')
-                    ->required()
-                    ->numeric()
-                    ->prefix('$'),
-                Forms\Components\Textarea::make('other_details')
-                    ->columnSpanFull(),
+                //
             ]);
     }
 
@@ -42,22 +31,7 @@ class MainStreamResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('report_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('type')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('cost')
-                    ->money()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                //
             ])
             ->filters([
                 //
