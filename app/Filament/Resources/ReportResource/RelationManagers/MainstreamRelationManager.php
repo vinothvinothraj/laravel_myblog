@@ -14,13 +14,15 @@ class MainstreamRelationManager extends RelationManager
 {
     protected static string $relationship = 'mainstream';
 
-    public function form(Form $form): Form
+    public  function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('type')
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
+                Forms\Components\TextInput::make('cost')
+                    ->required(),
+                Forms\Components\Textarea::make('other_details'),
             ]);
     }
 
